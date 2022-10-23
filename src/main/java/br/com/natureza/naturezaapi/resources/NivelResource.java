@@ -5,12 +5,10 @@ import br.com.natureza.naturezaapi.models.Nivel;
 import br.com.natureza.naturezaapi.services.NivelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/niveis")
@@ -18,11 +16,6 @@ public class NivelResource {
 
     @Autowired
     NivelService service;
-
-    @RequestMapping(method= RequestMethod.GET)
-    public ResponseEntity findAll() {
-        return ResponseEntity.ok().body("Teste");
-    }
 
     @Transactional(rollbackOn = Exception.class)
     @RequestMapping(method=RequestMethod.POST)
@@ -32,4 +25,15 @@ public class NivelResource {
         return ResponseEntity.ok().body(nivel);
     }
 
+    @RequestMapping(method=RequestMethod.GET)
+    public ResponseEntity<List<Nivel>> findAll() {
+        List<Nivel> niveis = service.findAll();
+        return ResponseEntity.ok().body(niveis);
+    }
+
+    @RequestMapping(value="/{nivelId}", method=RequestMethod.GET)
+    public ResponseEntity<Nivel> findById(@PathVariable Integer nivelId) {
+        Nivel nivel = service.findById(nivelId);
+        return ResponseEntity.ok().body(nivel);
+    }
 }
