@@ -26,6 +26,12 @@ public class NivelResource {
         return ResponseEntity.ok().body(nivel);
     }
 
+    @RequestMapping(method=RequestMethod.PUT)
+    public ResponseEntity<Void> update(@RequestBody NivelDTO dto) {
+        service.update(dto);
+        return ResponseEntity.noContent().build();
+    }
+
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<List<Nivel>> findAll() {
         List<Nivel> niveis = service.findAll();

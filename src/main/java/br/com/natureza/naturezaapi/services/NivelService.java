@@ -37,8 +37,20 @@ public class NivelService {
         Optional<Nivel> nivel = nivelRepository.findById(nivelId);
         return nivel.orElseThrow(() -> new ObjectNotFoundException("Nivel não encontrado."));
     }
-
     public void delete(Nivel nivel){
         nivelRepository.deleteById(nivel.getId());
+    }
+
+    public Nivel update(NivelDTO nivelDTO) {
+        Nivel nivel = findById(nivelDTO.getId());
+        nivel.setDescricao(nivelDTO.getDescricao() == null ? nivel.getDescricao() : nivelDTO.getDescricao());
+        nivel.setSeparador(nivelDTO.getSeparador() == null ? nivel.getSeparador() : nivelDTO.getSeparador());
+        nivel.setNumero(nivelDTO.getNumero() == null ? nivel.getNumero() : nivelDTO.getNumero());
+        nivel.setDigito(nivelDTO.getDigito() == null ? nivel.getDigito() : nivelDTO.getDigito());
+        update(nivel);
+        return nivel;
+    }
+    public Nivel update(Nivel nivel) {
+        return nivelRepository.save(nivel);
     }
 }
