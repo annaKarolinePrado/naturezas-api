@@ -1,6 +1,7 @@
 package br.com.natureza.naturezaapi.resources;
 
 import br.com.natureza.naturezaapi.dto.NivelDTO;
+import br.com.natureza.naturezaapi.exceptions.ObjectNotFoundException;
 import br.com.natureza.naturezaapi.models.Nivel;
 import br.com.natureza.naturezaapi.services.NivelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,15 @@ public class NivelResource {
     }
 
     @RequestMapping(value="/{nivelId}", method=RequestMethod.GET)
-    public ResponseEntity<Nivel> findById(@PathVariable Integer nivelId) {
+    public ResponseEntity<Nivel> findById(@PathVariable Integer nivelId) throws ObjectNotFoundException {
         Nivel nivel = service.findById(nivelId);
         return ResponseEntity.ok().body(nivel);
+    }
+
+    @RequestMapping(method=RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@RequestBody NivelDTO dto) {
+        Nivel nivel = service.findById(dto.getId());
+        service.delete(nivel);
+        return ResponseEntity.noContent().build();
     }
 }

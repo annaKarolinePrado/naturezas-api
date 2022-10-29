@@ -37,4 +37,8 @@ public class NivelService {
         Optional<Nivel> nivel = nivelRepository.findById(nivelId);
         return nivel.orElseThrow(() -> new ObjectNotFoundException("Nivel não encontrado."));
     }
+
+    public void delete(Nivel nivel){
+        nivelRepository.deleteById(nivel.getId());
+    }
 }
